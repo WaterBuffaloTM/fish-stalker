@@ -1,6 +1,6 @@
-# Configuration files
-public/config/config.production.php
-public/config/config.development.php
+# Dependencies
+/vendor/
+composer.phar
 
 # Environment files
 .env
@@ -54,14 +54,6 @@ tests/
 config.local.php
 db_config.local.php
 
-# Dependencies
-/vendor/
-composer.phar
-node_modules/
-
-# Build files
-/dist/
-/build/
-
-__pycache__/
-*.pyc 
+# Deployment files
+deploy_temp/
+deploy.zip 
