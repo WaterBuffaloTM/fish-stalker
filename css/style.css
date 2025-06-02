@@ -104,41 +104,67 @@ button:hover {
     background-color: #c82333;
 }
 
+.loading {
+    text-align: center;
+    padding: 40px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #007bff;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .report-card {
     background-color: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .report-card h3 {
     color: #333;
     margin-top: 0;
-    border-bottom: 2px solid #007bff;
+    margin-bottom: 15px;
     padding-bottom: 10px;
+    border-bottom: 2px solid #007bff;
 }
 
 .report-content {
     white-space: pre-wrap;
     font-family: Arial, sans-serif;
-    line-height: 1.6;
+    line-height: 1.8;
+    color: #444;
 }
 
-.loading {
-    text-align: center;
-    padding: 20px;
+.report-meta {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
     color: #666;
-    font-style: italic;
+    font-size: 0.9em;
 }
 
 .error {
-    color: #dc3545;
-    padding: 10px;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    border-radius: 4px;
-    margin: 10px 0;
+    background-color: #fff3f3;
+    border: 1px solid #ffcdd2;
+    color: #d32f2f;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
 }
 
 .report-button {

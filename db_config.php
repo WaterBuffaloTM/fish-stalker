@@ -17,13 +17,15 @@ try {
         email VARCHAR(255) NOT NULL,
         instagram_link VARCHAR(255) NOT NULL,
         name VARCHAR(255) NOT NULL,
-        boat_type VARCHAR(255) NOT NULL,
-        city VARCHAR(255) NOT NULL,
-        region VARCHAR(255) NOT NULL,
+        boat_type VARCHAR(100) NOT NULL,
+        city VARCHAR(100) NOT NULL,
+        region VARCHAR(100) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
 
+    // Log successful connection
+    error_log("Database connection successful");
 } catch (PDOException $e) {
-    error_log("Database Error: " . $e->getMessage());
+    error_log("Database connection failed: " . $e->getMessage());
     die("Connection failed: " . $e->getMessage());
 } 

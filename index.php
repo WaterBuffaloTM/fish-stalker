@@ -42,7 +42,7 @@
         <!-- Report Display -->
         <div class="section" id="reportSection" style="display: none;">
             <h2>Fishing Report</h2>
-            <div id="fishingReport"></div>
+            <div id="reportsList"></div>
         </div>
     </div>
 

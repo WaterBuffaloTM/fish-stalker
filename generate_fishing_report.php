@@ -1,6 +1,6 @@
 <?php
 // Set error logging
-ini_set('display_errors', 1);
+ini_set('display_errors', 0); // Don't display errors to the client
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/php_errors.log');
 
@@ -58,7 +58,7 @@ try {
             ]
         ]);
         error_log("Received response from Apify");
-    } catch (RequestException $e) {
+    } catch (Exception $e) {
         error_log("Apify API Error: " . $e->getMessage());
         if ($e->hasResponse()) {
             error_log("Apify Error Response: " . $e->getResponse()->getBody()->getContents());
