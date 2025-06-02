@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const watchlistResults = document.getElementById('watchlistResults');
     const generateReportBtn = document.getElementById('generateReportBtn');
     const reportSection = document.getElementById('reportSection');
+    const reportsList = document.getElementById('reportsList');
     
     let currentEmail = '';
 
@@ -13,6 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
     emailForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         currentEmail = document.getElementById('email').value;
+        
+        if (!validateEmail(currentEmail)) {
+            alert('Please enter a valid email address');
+            return;
+        }
         
         // Show watchlist section
         watchlistSection.style.display = 'block';
@@ -25,6 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add to Watchlist
     watchlistForm.addEventListener('submit', async function(e) {
         e.preventDefault();
+        
+        if (!validateForm()) {
+            return;
+        }
         
         const formData = {
             email: currentEmail,
@@ -102,17 +112,20 @@ document.addEventListener('DOMContentLoaded', function() {
         reportSection.innerHTML = '<div class="loading">Generating fishing report... This may take a few minutes.</div>';
 
         try {
+            console.log('Sending report generation request...');
             const response = await fetch('generate_fishing_report.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({ email: currentEmail })
             });
             
+            console.log('Response received:', response);
             const result = await response.json();
+            console.log('Parsed result:', result);
             
             if (result.success) {
-                // Display the reports on the page
                 if (result.reports && result.reports.length > 0) {
                     let reportsHtml = '';
                     result.reports.forEach(report => {
@@ -136,9 +149,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 reportsList.innerHTML = `<div class="error">Error: ${result.message}</div>`;
             }
         } catch (error) {
+            console.error('Error details:', error);
             reportsList.innerHTML = `<div class="error">Error requesting report: ${error.message}</div>`;
         }
     });
+
+    // Form validation functions
+    function validateForm() {
+        const name = document.getElementById('name').value;
+        const instagramLink = document.getElementById('instagramLink').value;
+        const boatType = document.getElementById('boatType').value;
+        const city = document.getElementById('city').value;
+        const region = document.getElementById('region').value;
+        
+        if (!name || !instagramLink || !boatType || !city || !region) {
+            alert('Please fill in all fields');
+            return false;
+        }
+        
+        if (!isValidInstagramLink(instagramLink)) {
+            alert('Please enter a valid Instagram link (e.g., https://instagram.com/username)');
+            return false;
+        }
+        
+        return true;
+    }
+    
+    function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    
+    function isValidInstagramLink(link) {
+        return /^https?:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?.*$/.test(link);
+    }
 });
 
 // Remove from Watchlist
