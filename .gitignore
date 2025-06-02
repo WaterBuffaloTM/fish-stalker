@@ -5,22 +5,58 @@ public/config/config.development.php
 # Environment files
 .env
 .env.*
+!.env.example
 
 # Logs
 *.log
-public/php_errors.log
+php_errors.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # IDE files
 .idea/
 .vscode/
-*.sublime-*
+*.sublime-project
+*.sublime-workspace
 
-# OS files
-.DS_Store
-Thumbs.db
+# Temporary files
+*.swp
+*.swo
+*~
+
+# Build files
+*.zip
+*.tar.gz
+*.rar
+
+# Cache files
+*.cache
+.cache/
+
+# Test files
+test_*.php
+*.test.php
+tests/
+
+# Backup files
+*.bak
+*.backup
+*_backup/
+
+# Local configuration
+config.local.php
+db_config.local.php
 
 # Dependencies
 /vendor/
+composer.phar
 node_modules/
 
 # Build files
