@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fishing Watch List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #34495e;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        .watchlist-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .watchlist-table th, .watchlist-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .watchlist-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fishing Watch List</h1>
+        
+        <form id="watchlistForm">
+            <div class="form-group">
+                <label for="name">Name (Instagram Handle)</label>
+                <input type="text" id="name" name="name" required>
+                <div class="error" id="nameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="socialType">Social Media Type</label>
+                <select id="socialType" name="socialType" required>
+                    <option value="instagram">Instagram</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="instagramLink">Instagram Link</label>
+                <input type="url" id="instagramLink" name="instagramLink" 
+                       pattern="https?:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?.*"
+                       placeholder="https://www.instagram.com/username/" required>
+                <div class="error" id="instagramError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="boatType">Type of Boat/Fisherman</label>
+                <select id="boatType" name="boatType" required>
+                    <option value="">Select a type</option>
+                    <option value="Private Charter">Private Charter</option>
+                    <option value="Public Boat">Public Boat</option>
+                    <option value="Fishing Personality">Fishing Personality</option>
+                    <option value="Land Based">Land Based</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="city">City</label>
+                <select id="city" name="city" required>
+                    <option value="">Select a city</option>
+                    <option value="Boca Raton">Boca Raton</option>
+                    <option value="Boynton Beach">Boynton Beach</option>
+                    <option value="Delray Beach">Delray Beach</option>
+                    <option value="Jupiter">Jupiter</option>
+                    <option value="Lake Worth">Lake Worth</option>
+                    <option value="Palm Beach">Palm Beach</option>
+                    <option value="Palm Beach Gardens">Palm Beach Gardens</option>
+                    <option value="Riviera Beach">Riviera Beach</option>
+                    <option value="West Palm Beach">West Palm Beach</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="region">Region</label>
+                <input type="text" id="region" name="region" value="Palm Beach County" readonly>
+            </div>
+
+            <button type="submit">Add to Watch List</button>
+        </form>
+
+        <table class="watchlist-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Instagram Link</th>
+                    <th>Type</th>
+                    <th>City</th>
+                    <th>Region</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="watchlistTableBody">
+                <!-- Table rows will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('watchlistForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate Instagram link
+            const instagramLink = document.getElementById('instagramLink').value;
+            const instagramPattern = /^https?:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?.*$/;
+            
+            if (!instagramPattern.test(instagramLink)) {
+                document.getElementById('instagramError').textContent = 'Please enter a valid Instagram URL';
+                document.getElementById('instagramError').style.display = 'block';
+                return;
+            }
+
+            // Get form values
+            const name = document.getElementById('name').value;
+            const boatType = document.getElementById('boatType').value;
+            const city = document.getElementById('city').value;
+            const region = document.getElementById('region').value;
+
+            // Add to table
+            const tableBody = document.getElementById('watchlistTableBody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${name}</td>
+                <td><a href="${instagramLink}" target="_blank">${instagramLink}</a></td>
+                <td>${boatType}</td>
+                <td>${city}</td>
+                <td>${region}</td>
+                <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
+            `;
+            tableBody.appendChild(row);
+
+            // Clear form
+            this.reset();
+            document.getElementById('region').value = 'Palm Beach County';
+        });
+
+        function deleteRow(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        // Validate Instagram link on input
+        document.getElementById('instagramLink').addEventListener('input', function(e) {
+            const instagramPattern = /^https?:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?.*$/;
+            const errorElement = document.getElementById('instagramError');
+            
+            if (!instagramPattern.test(this.value)) {
+                errorElement.textContent = 'Please enter a valid Instagram URL';
+                errorElement.style.display = 'block';
+            } else {
+                errorElement.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html> 

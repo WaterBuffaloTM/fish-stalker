@@ -1,0 +1,21 @@
+# Configuration files
+public/config.php
+
+# Dependencies
+/vendor/
+composer.lock
+
+# Environment files
+.env
+.env.*
+
+# IDE files
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+__pycache__/
+*.pyc 

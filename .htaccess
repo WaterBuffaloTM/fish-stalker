@@ -1,0 +1,14 @@
+RewriteEngine On
+RewriteBase /
+
+# Redirect all requests to index.html except for existing files
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.html [L]
+
+# Enable CORS
+Header set Access-Control-Allow-Origin "*"
+
+# Set proper MIME types
+AddType text/css .css
+AddType application/javascript .js 
