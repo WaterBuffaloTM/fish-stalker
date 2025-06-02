@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const watchlistDisplay = document.getElementById('watchlistDisplay');
     const watchlistResults = document.getElementById('watchlistResults');
     const generateReportBtn = document.getElementById('generateReportBtn');
-    const reportSection = document.getElementById('fishingReport');
+    const reportSection = document.getElementById('reportSection');
     
     let currentEmail = '';
 
@@ -98,8 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Generate Report
     generateReportBtn.addEventListener('click', async function() {
-        reportSection.innerHTML = '<p>Generating fishing report...</p>';
         reportSection.style.display = 'block';
+        reportSection.innerHTML = '<div class="loading">Generating fishing report... This may take a few minutes.</div>';
 
         try {
             const response = await fetch('generate_fishing_report.php', {
@@ -114,19 +114,21 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (data.success) {
                 const reportsHtml = data.reports.map(report => `
-                    <div class="report-section">
-                        <h3>Report for ${report.instagram_url}</h3>
-                        <pre>${report.report || report.error}</pre>
+                    <div class="report-card">
+                        <h3>Fishing Report</h3>
+                        <div class="report-content">
+                            ${report.report ? report.report.replace(/\n/g, '<br>') : `<p class="error">${report.error}</p>`}
+                        </div>
                     </div>
                 `).join('');
                 
                 reportSection.innerHTML = reportsHtml;
             } else {
-                reportSection.innerHTML = `<p>Error: ${data.message}</p>`;
+                reportSection.innerHTML = `<div class="error">Error: ${data.message}</div>`;
             }
         } catch (error) {
             console.error('Error:', error);
-            reportSection.innerHTML = '<p>An error occurred while generating the fishing report.</p>';
+            reportSection.innerHTML = '<div class="error">An error occurred while generating the fishing report.</div>';
         }
     });
 });
