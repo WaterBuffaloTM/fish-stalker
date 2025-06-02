@@ -106,29 +106,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email: currentEmail })
+                }
             });
-
-            const data = await response.json();
             
-            if (data.success) {
-                const reportsHtml = data.reports.map(report => `
-                    <div class="report-card">
-                        <h3>Fishing Report</h3>
-                        <div class="report-content">
-                            ${report.report ? report.report.replace(/\n/g, '<br>') : `<p class="error">${report.error}</p>`}
-                        </div>
-                    </div>
-                `).join('');
-                
-                reportSection.innerHTML = reportsHtml;
+            const result = await response.json();
+            
+            if (result.success) {
+                // Display the reports on the page
+                if (result.reports && result.reports.length > 0) {
+                    let reportsHtml = '';
+                    result.reports.forEach(report => {
+                        if (report.error) {
+                            reportsHtml += `<div class="error">${report.error}</div>`;
+                        } else {
+                            reportsHtml += `
+                                <div class="report-card">
+                                    <div class="report-content">
+                                        <pre>${report.report}</pre>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    });
+                    reportsList.innerHTML = reportsHtml;
+                } else {
+                    reportsList.innerHTML = '<div class="error">No reports were generated</div>';
+                }
             } else {
-                reportSection.innerHTML = `<div class="error">Error: ${data.message}</div>`;
+                reportsList.innerHTML = `<div class="error">Error: ${result.message}</div>`;
             }
         } catch (error) {
-            console.error('Error:', error);
-            reportSection.innerHTML = '<div class="error">An error occurred while generating the fishing report.</div>';
+            reportsList.innerHTML = `<div class="error">Error requesting report: ${error.message}</div>`;
         }
     });
 });

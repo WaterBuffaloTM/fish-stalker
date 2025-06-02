@@ -8,58 +8,20 @@ ini_set('error_log', __DIR__ . '/php_errors.log');
 set_time_limit(300);
 ini_set('max_execution_time', 300);
 
+require 'vendor/autoload.php';
+require 'config/config.php';
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+
+header('Content-Type: application/json');
+
 try {
     error_log("Starting report generation process...");
     
-    // Check if vendor directory exists
-    if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
-        throw new Exception('Vendor directory not found. Please run composer install');
-    }
-    
-    // Check if config directory exists
-    if (!file_exists(__DIR__ . '/config/config.php')) {
-        throw new Exception('Config directory not found');
-    }
-    
-    require 'vendor/autoload.php';
-    require 'config/config.php';
-
-    // Verify database connection
-    try {
-        $pdo->getAttribute(PDO::ATTR_CONNECTION_STATUS);
-        error_log("Database connection successful");
-    } catch (PDOException $e) {
-        throw new Exception('Database connection failed: ' . $e->getMessage());
-    }
-
-    // Verify API keys are set
-    if (empty(APIFY_API_KEY)) {
-        throw new Exception('Apify API key is not set');
-    }
-    if (empty(OPENAI_API_KEY)) {
-        throw new Exception('OpenAI API key is not set');
-    }
-
-    use GuzzleHttp\Client;
-    use GuzzleHttp\Exception\RequestException;
-
-    header('Content-Type: application/json');
-
-    // Get user data from POST request
-    $input = json_decode(file_get_contents('php://input'), true);
-    error_log("Received input: " . json_encode($input));
-    
-    $email = $input['email'] ?? '';
-    
-    if (empty($email)) {
-        throw new Exception('Email is required');
-    }
-
-    error_log("Processing email: " . $email);
-
-    // Get all Instagram links for this user's watchlist
-    $stmt = $pdo->prepare("SELECT * FROM watchlist WHERE email = ?");
-    $stmt->execute([$email]);
+    // Get all Instagram links from watchlist
+    $stmt = $pdo->prepare("SELECT * FROM watchlist");
+    $stmt->execute();
     $captains = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     error_log("Found " . count($captains) . " captains in watchlist");
