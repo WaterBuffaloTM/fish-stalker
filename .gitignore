@@ -1,11 +1,11 @@
-# Dependencies
-/vendor/
-composer.phar
-
 # Environment files
 .env
 .env.*
 !.env.example
+
+# Dependencies
+/vendor/
+composer.lock
 
 # Logs
 *.log
@@ -27,28 +27,28 @@ Thumbs.db
 *.sublime-workspace
 
 # Temporary files
+*.tmp
+*.temp
 *.swp
-*.swo
 *~
 
 # Build files
-*.zip
-*.tar.gz
-*.rar
+/dist/
+/build/
 
 # Cache files
 *.cache
 .cache/
 
 # Test files
-test_*.php
+/tests/
 *.test.php
-tests/
+phpunit.xml
 
 # Backup files
 *.bak
 *.backup
-*_backup/
+*_backup
 
 # Local configuration
 config.local.php
