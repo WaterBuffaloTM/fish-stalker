@@ -6,8 +6,29 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.html [L]
 
+# Protect .env file
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Protect sensitive files
+<FilesMatch "^(\.env|\.gitignore|composer\.(json|lock))$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Enable PHP error logging
+php_flag log_errors on
+php_value error_log php_errors.log
+
+# Set maximum execution time
+php_value max_execution_time 300
+
 # Enable CORS
 Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+Header set Access-Control-Allow-Headers "Content-Type"
 
 # Set proper MIME types
 AddType text/css .css

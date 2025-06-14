@@ -8,10 +8,22 @@ try {
     // Log received data
     error_log("Received data: " . print_r($data, true));
     
-    if (!isset($data['email']) || !isset($data['instagram_link']) || !isset($data['name']) || 
-        !isset($data['boat_type']) || !isset($data['city']) || !isset($data['region'])) {
-        error_log("Missing required fields. Data received: " . print_r($data, true));
-        throw new Exception('Missing required fields');
+    if (!$data) {
+        throw new Exception('Invalid JSON data received');
+    }
+    
+    $required_fields = ['email', 'instagram_link', 'name', 'boat_type', 'city', 'region'];
+    $missing_fields = [];
+    
+    foreach ($required_fields as $field) {
+        if (!isset($data[$field]) || empty($data[$field])) {
+            $missing_fields[] = $field;
+        }
+    }
+    
+    if (!empty($missing_fields)) {
+        error_log("Missing required fields: " . implode(', ', $missing_fields));
+        throw new Exception('Missing required fields: ' . implode(', ', $missing_fields));
     }
 
     $stmt = $pdo->prepare("INSERT INTO watchlist (email, instagram_link, name, boat_type, city, region) 
@@ -35,8 +47,12 @@ try {
     error_log("Successfully inserted record with ID: " . $pdo->lastInsertId());
 
     echo json_encode(['success' => true]);
+} catch (PDOException $e) {
+    error_log("Database error in save_watchlist.php: " . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 } catch (Exception $e) {
     error_log("Error in save_watchlist.php: " . $e->getMessage());
-    http_response_code(500);
+    http_response_code(400);
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 } 

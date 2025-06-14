@@ -4,48 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fish Stalker</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Fish Stalker</h1>
-        
-        <!-- Email Login -->
-        <div class="section">
-            <h2>Enter Your Email</h2>
-            <form id="emailForm">
-                <input type="email" id="email" placeholder="Your Email" required>
-                <button type="submit">Continue</button>
-            </form>
+    <!-- Nav Bar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <img src="/favicon.png" alt="FishStalker.ai Logo" class="navbar-logo">
+            <span class="navbar-title">FishStalker.ai</span>
+            <div class="navbar-links" id="navbarLinks">
+                <a href="login.html" class="navbar-link">Login</a>
+                <a href="settings.html" class="navbar-link">Settings</a>
+                <a href="whats-biting.html" class="navbar-link">What's Biting</a>
+                <a href="contact.html" class="navbar-link">Contact Us</a>
+                <a href="sponsors.html" class="navbar-link">Sponsors</a>
+            </div>
+            <button class="navbar-hamburger" id="navbarHamburger" aria-label="Open menu">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect y="6" width="32" height="4" rx="2" fill="#fff"/>
+                    <rect y="14" width="32" height="4" rx="2" fill="#fff"/>
+                    <rect y="22" width="32" height="4" rx="2" fill="#fff"/>
+                </svg>
+            </button>
         </div>
-
-        <!-- Add Instagram Links (hidden until email is entered) -->
-        <div class="section" id="watchlistSection" style="display: none;">
-            <h2>Add Captain to Watchlist</h2>
-            <form id="watchlistForm">
-                <input type="text" id="name" placeholder="Captain Name" required>
-                <input type="text" id="instagramLink" placeholder="Instagram Profile URL" required>
-                <input type="text" id="boatType" placeholder="Boat Type" required>
-                <input type="text" id="city" placeholder="City" required>
-                <input type="text" id="region" placeholder="Region" required>
-                <button type="submit">Add to Watchlist</button>
-            </form>
+    </nav>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-video-bg">
+            <video class="hero-video" src="/FishStalkerAI.mp4" autoplay loop muted playsinline></video>
         </div>
-
-        <!-- Watchlist Display -->
-        <div class="section" id="watchlistDisplay" style="display: none;">
-            <h2>Your Watchlist</h2>
-            <div id="watchlistResults"></div>
-            <button id="generateReportBtn" style="display: none;">Generate Fishing Report</button>
+        <div class="hero-overlay-content">
+            <img src="/favicon.png" alt="FishStalker.ai Logo" class="hero-logo">
+            <h1 class="hero-title">Track What's Biting. Powered by AI.</h1>
+            <p class="hero-subtitle">The fastest way to see what captains are catching right now.</p>
         </div>
+    </section>
+    <div class="main-bg">
+        <div class="container">
+            <!-- Personalized Greeting Header -->
+            <div id="greetingHeader" class="greeting-header" style="display:none;"></div>
+            <!-- Modern Card with Four Buttons -->
+            <div class="main-card" style="max-width: 1100px; margin: 0 auto;">
+                <div class="main-card-grid">
+                    <div class="main-card-section">
+                        <h3>🐟 By Fish</h3>
+                        <button id="addFishBtn">Add Fish</button>
+                        <button id="generateReportByFishBtn">Generate Fishing Report by Fish</button>
+                    </div>
+                    <div class="main-card-section">
+                        <h3>🧑‍✈️ By Fisherman</h3>
+                        <button id="addToWatchlistBtn">Add Fisherman to Watchlist</button>
+                        <button id="generateWatchlistReportBtn">Generate Fishing Report from Watchlist</button>
+                        <button id="viewWatchlistBtn">View Watchlist</button>
+                    </div>
+                    <div class="main-card-section">
+                        <h3>📍 By Location</h3>
+                        <button id="chooseLocationBtn">Choose Your Location</button>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Report Display -->
-        <div class="section" id="reportSection" style="display: none;">
-            <h2>Fishing Report</h2>
-            <div id="reportsList"></div>
+            <!-- Email Login -->
+            <div class="section" id="emailSection">
+                <h2>Enter Your Email</h2>
+                <form id="emailForm">
+                    <input type="email" id="email" placeholder="Your Email" required>
+                    <button type="submit">Continue</button>
+                </form>
+            </div>
+
+            <!-- Add Instagram Links (hidden until triggered) -->
+            <div class="section" id="watchlistSection" style="display:none;">
+                <h2>Add Captain to Watchlist</h2>
+                <form id="watchlistForm">
+                    <input type="text" id="name" placeholder="Captain Name" required>
+                    <input type="text" id="instagramLink" placeholder="Instagram Profile URL" required>
+                    <input type="text" id="boatType" placeholder="Boat Type" required>
+                    <input type="text" id="city" placeholder="City" required>
+                    <input type="text" id="region" placeholder="Region" required>
+                    <button type="submit">Add to Watchlist</button>
+                </form>
+            </div>
+
+            <!-- Watchlist Display -->
+            <div class="section" id="watchlistDisplay" style="display:none;">
+                <h2>Your Watchlist</h2>
+                <div id="watchlistResults"></div>
+            </div>
+
+            <!-- Report Display -->
+            <div class="section" id="reportSection" style="display: none;">
+                <h2>Fishing Report Generated by <span id="fishingReportType">...</span></h2>
+                <div id="todaysReport">
+                    <h3>Today's Fishing Report</h3>
+                    <div id="todaysReportContent"></div>
+                </div>
+                <div id="pastReports">
+                    <h3>Past Fishing Reports</h3>
+                    <div id="pastReportsList"></div>
+                </div>
+            </div>
         </div>
     </div>
-
     <script src="js/script.js"></script>
 </body>
 </html> 
